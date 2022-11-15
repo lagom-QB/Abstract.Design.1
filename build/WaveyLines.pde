@@ -1,13 +1,13 @@
 class WaveyLine {
     PVector pointPos, 
             prevPos;
-    float size = random(2.4), 
-         speed = 1.5,
+    float size = random(2), 
+         speed = .5,
          noiseScale = 10000,
-         noiseStrength = 20,
+         noiseStrength = 10,
          angle,
-         z = random(.2,.4);
-    color strokeColor = color(random(255), random(255), random(255), random(200,255));
+         z = random(.2,1.2);
+    color strokeColor = color(random(200), 25, 55, random(100));
     
     WaveyLine() {
         pointPos = new PVector(random(0, width), random(0, height));
@@ -25,7 +25,7 @@ class WaveyLine {
             noise(
                 pointPos.x/noiseScale, 
                 pointPos.y/noiseScale, 
-                z)*TAU*noiseStrength;
+                z)*PI*noiseStrength;
 
         pointPos.x += min(cos(angle)*random(speed),width);
         pointPos.y += min(sin(angle)*random(speed), height);

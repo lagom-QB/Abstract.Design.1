@@ -2,47 +2,45 @@
 PGraphics bg,mask; // Background and mask
 int width     = 400, 
     height    = 600,
-    count     = 1,
-    lineCount = 10;
+    count     = 30,
+    lineCount = 15;
 
 float x , y, diam;
 
 PVector[] position          = new PVector[count];
-color baseBkg = color(233, 236, 201, 60),
-      maskBkg = color(0, 0, 0, 60);
+color bgColor = color(233, 236, 201, 60),
+      baseBkg = color(250,206,250, random(100));
 
 WaveyLine[] movingLine      = new WaveyLine[lineCount];
-MaskCircle[] stagnantCircle = new MaskCircle[count];
+MaskCircle stagnantCircle;
 // ---------------------------------------------- Functions
 void settings() {
     size(width, height, P2D);
 }
 
 void setup() {
-    frameRate(5);
+    // frameRate(5);
     surface.setTitle("Masking");
     surface.setLocation(900, 100);
-    background(baseBkg);
     
     // Define the positions of squares and the Circles
     for (int i = 0; i < count; i++) {
         position[i] = new PVector(
             random(10,width), 
-            random(10,height));
-        stagnantCircle[i] = new MaskCircle(
-            position[i].x, 
-            position[i].y);
+            random(10,height));  
     }
+    stagnantCircle = new MaskCircle(
+            position[int(random(count))].x, 
+            position[int(random(count))].y);
     // -------------------------------
     // Define the Lines
     for (int i = 0; i < lineCount; i++) {
         movingLine[i] = new WaveyLine();
     }
     // -------------------------------
-
     bg = createGraphics(width, height);
     bg.beginDraw();
-    bg.background(250,206,250, random(100));
+    bg.background(baseBkg);
     // Create odd shaped squares
     for (int i = 0; i < count; ++i) {
         oddRect(
@@ -56,19 +54,17 @@ void setup() {
     // -------------------------
     bg.endDraw();
     
+    mask = createGraphics(width, height);
 }
 
 void draw() {
-    mask = createGraphics(width, height);
-    // mask.background(baseBkg);
+    background(bgColor);
     mask.beginDraw();
     mask.noStroke();
-    
+
     // Create circles to show the squares
-    for (int i = 0; i < count; ++i) {
-        stagnantCircle[i].display(mask);
-        stagnantCircle[i].update();
-    }
+    stagnantCircle.display(mask);
+    stagnantCircle.update();
     // ----------------------------------
     mask.endDraw();
 
